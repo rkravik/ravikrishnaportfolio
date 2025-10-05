@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title th:text="${resume.name != null ? resume.name + ' - Portfolio' : 'Portfolio'}">Portfolio</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome v6 -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        referrerpolicy="no-referrer">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="profile-img" th:if="${resume.profileImagePath}">
+      <!-- Use the path/URL stored in MongoDB -->
+      <img th:src="${resume.profileImagePath}" alt="Profile"/>
+    </div>
+    <div class="profile-img-fallback" th:unless="${resume.profileImagePath}">
+      👨‍💻
+    </div>
+
+    <div class="name" th:text="${resume.name}">Your Name</div>
+    <div class="role">      Full-Stack Web Developer
+    </div>
+
+    <div class="contact">
+      <p>
+        <strong><i class="fa-solid fa-envelope"></i> Email:</strong>
+        <a th:href="'mailto:' + ${resume.contact.email}"
+           th:text="${resume.contact.email}">email@example.com</a>
+      </p>
+
+      <p>
+        <strong><i class="fa-solid fa-phone"></i> Phone:</strong>
+        <a th:href="'tel:' + ${#strings.replace(#strings.replace(#strings.replace(#strings.replace(resume.contact.phone,' ',''),'-',''),'(',''),')','')}"
+           th:text="${resume.contact.phone}">
+          +91 1234567890
+        </a>
+      </p>
+
+      <p th:if="${resume.contact.github}">
+        <strong><i class="fa-brands fa-github"></i> GitHub:</strong>
+        <a th:href="${resume.contact.github}" th:text="${resume.contact.github}" target="_blank" rel="noopener"></a>
+      </p>
+
+      <p th:if="${resume.contact.linkedin}">
+        <strong><i class="fa-brands fa-linkedin"></i> LinkedIn:</strong>
+        <a th:href="${resume.contact.linkedin}" th:text="${resume.contact.linkedin}" target="_blank" rel="noopener"></a>
+      </p>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <nav class="tabs">
+      <button class="tab-btn active" onclick="showTab('about', this)">About</button>
+      <button class="tab-btn" onclick="showTab('experience', this)">Resume</button>
+      <button class="tab-btn" onclick="showTab('projects', this)">Portfolio</button>
+      <button class="tab-btn" onclick="showTab('skills', this)">Skillset</button>
+      <button class="tab-btn" onclick="showTab('technical', this)">Proficiency</button>
+      <button class="tab-btn" onclick="showTab('contact', this)">Contact</button>
+    </nav>
+
+    <!-- About -->
+    <section id="about" class="active">
+      <div class="card">
+        <h2><i class="fa-solid fa-user icon"></i> About Me</h2>
+        <div class="line"></div>
+        <p th:text="${resume.about}">Write a short intro about yourself...</p>
+      </div>
+    </section>
+
+    <!-- Experience / Resume -->
+    <section id="experience">
+      <div class="section-header">
+        <i class="fa-solid fa-briefcase icon"></i>
+        <h2>Resume</h2>
+      </div>
+
+      <div class="sub-header">
+        <i class="fa-solid fa-user-tie sub-icon"></i>
+        <h3>Experience</h3>
+      </div>
+
+      <div th:each="exp : ${resume.experience}" class="card">
+        <h3 th:text="${exp.role}">Software Engineer</h3>
+        <p>
+          <strong th:text="${exp.company}">Company</strong> |
+          <span th:text="${exp.period}">2020-2022</span>
+        </p>
+        <p th:text="${exp.description}">Description...</p>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <div class="section-header">
+        <i class="fa-solid fa-folder-open icon"></i>
+        <h2>Portfolio</h2>
+      </div>
+      <div th:each="proj : ${resume.projects}" class="card">
+        <h3 th:text="${proj.title}">Project Title</h3>
+        <p th:text="${proj.description}">Project description...</p>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <div class="section-header">
+        <i class="fa-solid fa-screwdriver-wrench icon"></i>
+        <h2>Skillset</h2>
+      </div>
+      <div th:each="skill : ${resume.expertise}" class="card">
+        <h3 th:text="${skill}">Skill</h3>
+      </div>
+
+      <div class="section-header">
+        <i class="fa-solid fa-award icon"></i>
+        <h2>Certifications</h2>
+      </div>
+      <div th:each="cert : ${resume.certifications}" class="card">
+        <h3 th:text="${cert}">Certification</h3>
+      </div>
+    </section>
+
+    <!-- Technical Proficiency -->
+    <section id="technical" class="technical-proficiency">
+      <div class="section-header">
+        <i class="fa-solid fa-gears icon"></i>
+        <h2>Technical Proficiency</h2>
+      </div>
+      <div th:each="tech : ${resume.technicalProficiency}" class="skill">
+        <span th:text="${tech.name}">Skill Name</span>
+        <div class="progress-bar">
+          <div class="progress" th:style="'width:' + ${tech.percentage} + '%'"></div>
+        </div>
+        <span class="percentage" th:text="${tech.percentage + '%'}">%</span>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="section-header">
+        <i class="fa-solid fa-paper-plane icon"></i>
+        <h2>Contact</h2>
+      </div>
+      <div class="card">
+        <p>
+          <i class="fa-solid fa-envelope"></i> Email:
+          <a th:href="'mailto:' + ${resume.contact.email}"
+             th:text="${resume.contact.email}">email@example.com</a>
+        </p>
+        <p>
+          <i class="fa-solid fa-phone"></i> Phone:
+          <a th:href="'tel:' + ${#strings.replace(#strings.replace(#strings.replace(#strings.replace(resume.contact.phone,' ',''),'-',''),'(',''),')','')}"
+             th:text="${resume.contact.phone}">+91 1234567890</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">Made with ❤️ by Ravi Krishna</div>
+  </div>
+
+  <!-- Tabs Script -->
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+  </script>
+
+</body>
+</html>
