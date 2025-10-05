@@ -36,7 +36,7 @@
       </p>
 
       <p>
-        <strong><i class="fa-solid fa-phone"></i> Phone  Number:</strong>
+        <strong><i class="fa-solid fa-phone"></i> Phone:</strong>
         <a th:href="'tel:' + ${#strings.replace(#strings.replace(#strings.replace(#strings.replace(resume.contact.phone,' ',''),'-',''),'(',''),')','')}"
            th:text="${resume.contact.phone}">
           +91 1234567890
@@ -152,7 +152,7 @@
       </div>
       <div class="card">
         <p>
-          <i class="fa-solid fa-envelope"></i> Email:
+        <strong><i class="fa-solid fa-envelope"></i> Emdssdail:</strong>
           <a th:href="'mailto:' + ${resume.contact.email}"
              th:text="${resume.contact.email}">email@example.com</a>
         </p>
