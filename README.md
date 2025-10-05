@@ -9,6 +9,7 @@
 ## Prerequisites
 - Java 17 (JDK 17)
 - Maven 3.6+
+- MongoDB
 - Docker & docker-compose (optional, recommended for quick MongoDB startup) OR a running MongoDB instance
 
 ## Quick start (recommended using Docker)
