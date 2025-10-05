@@ -36,7 +36,7 @@
       </p>
 
       <p>
-        <strong><i class="fa-solid fa-phone"></i> Phone:</strong>
+        <strong><i class="fa-solid fa-phone"></i> Phone  Number:</strong>
         <a th:href="'tel:' + ${#strings.replace(#strings.replace(#strings.replace(#strings.replace(resume.contact.phone,' ',''),'-',''),'(',''),')','')}"
            th:text="${resume.contact.phone}">
           +91 1234567890
